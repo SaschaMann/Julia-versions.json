@@ -1,5 +1,7 @@
 name: Build versions.json
 
+on: [workflow_dispatch, repository_dispatch]
+
 # env:
 #   aws_region: eu-west-2
 #   s3_bucket: julialang2
