@@ -1,6 +1,8 @@
 [deps]
+Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
 HTTP = "cd3eb016-35fb-5094-929b-558a96fad6f3"
 JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
 Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
 SHA = "ea8e919c-243c-51af-8825-aaa63cd721ce"
+TimeZones = "f269a46b-ccf7-5d73-abea-4c690281aa53"
 WebCacheUtilities = "0c1c26de-fc5f-47ff-87a8-a157289a9bac"
