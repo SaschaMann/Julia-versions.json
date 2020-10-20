@@ -21,6 +21,8 @@ jobs:
         - name: Check if there was a Julia release within the last week
           id: rebuild-check
           run: julia --color=yes --project rebuild_check.jl
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
         - name: Create version map
           if: steps.rebuild-check.outputs.rebuild == 'true'

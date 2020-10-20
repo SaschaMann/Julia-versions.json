@@ -14,7 +14,7 @@ function get_last_modified(url, headers=HTTP.Header[])
 end
 
 last_release  = get_last_modified("https://api.github.com/repos/julialang/julia/releases/latest", Dict(
-    # "Authorization" => "Bearer ${{ secrets.GITHUB_TOKEN }}",
+    "Authorization" => "Bearer $(ENV["GITHUB_TOKEN"])",
     "Accept" => "application/vnd.github.v3+json",
 ))
 
