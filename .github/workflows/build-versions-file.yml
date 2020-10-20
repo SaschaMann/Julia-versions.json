@@ -50,4 +50,4 @@ jobs:
         # - name: Upload versions.json to s3
         #   if: steps.rebuild-check.outputs.rebuild == 'true' || github.event_name == 'workflow_dispatch'
         #   run: |
-        #     aws s3 sync versions.json s3://${{ env.s3_bucket }}/bin/versions.json --acl public-read --no-progress
+        #     aws s3 cp versions.json s3://${{ env.s3_bucket }}/bin/versions.json --acl public-read --no-progress
