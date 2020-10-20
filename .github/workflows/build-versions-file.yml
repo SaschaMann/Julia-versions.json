@@ -13,7 +13,7 @@ jobs:
   build-json-map:
     runs-on: ubuntu-20.04
     steps:
-        - uses: actions/checkout@v2
+        - uses: actions/checkout@a81bbbf8298c0fa03ea29cdc473d45769f953675 # 2.3.3
 
         - name: Install dependencies
           run: julia --color=yes --project -e 'using Pkg; Pkg.instantiate()'
@@ -32,7 +32,7 @@ jobs:
           run: julia --color=yes --project build_json_map.jl versions.json
         
         # Upload version.json as workflow artifact for debugging purposes
-        - uses: actions/upload-artifact@v2
+        - uses: actions/upload-artifact@27bce4eee761b5bc643f46a8dfb41b430c8d05f6 # 2.2.0
           if: steps.rebuild-check.outputs.rebuild == 'true' || github.event_name == 'workflow_dispatch'
           with:
             name: versions
@@ -40,7 +40,7 @@ jobs:
             if-no-files-found: error
 
         # - name: Configure AWS credentials
-        #   uses: aws-actions/configure-aws-credentials@v1
+        #   uses: aws-actions/configure-aws-credentials@32d908adfb55576ba0c59f3c557058e80b5194c3 # 1.5.3
         #   if: steps.rebuild-check.outputs.rebuild == 'true' || github.event_name == 'workflow_dispatch'
         #   with:
         #     aws-access-key-id: ${{ secrets.AWS_DEPLOY_ACCESS_KEY_ID }}
