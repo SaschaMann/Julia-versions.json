@@ -1,0 +1,22 @@
+name: Build versions.json
+
+on: [workflow_dispatch, repository_dispatch]
+
+jobs:
+  build-json-map:
+    runs-on: ubuntu-20.04
+    steps:
+        - uses: actions/checkout@v2
+
+        - name: Install dependencies
+          run: julia --color=yes --project -e 'using Pkg; Pkg.instantiate()'
+
+        - name: Create version map
+          run: julia --color=yes --project build_json_map.jl versions.json
+        
+        # For debugging
+        - uses: actions/upload-artifact@v2
+          with:
+            name: versions
+            path: versions.json
+            if-no-files-found: error
