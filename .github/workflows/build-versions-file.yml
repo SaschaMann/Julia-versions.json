@@ -28,12 +28,12 @@ jobs:
         # Manually dispatched builds via the workflow_dispatch trigger will ALWAYS run, regardless of the time of the last release.
         
         - name: Create version map
-          if: steps.rebuild-check.outputs.rebuild == 'true' || github.event == 'workflow_dispatch'
+          if: steps.rebuild-check.outputs.rebuild == 'true' || github.event_name == 'workflow_dispatch'
           run: julia --color=yes --project build_json_map.jl versions.json
         
         # Upload version.json as workflow artifact for debugging purposes
         - uses: actions/upload-artifact@v2
-          if: steps.rebuild-check.outputs.rebuild == 'true' || github.event == 'workflow_dispatch'
+          if: steps.rebuild-check.outputs.rebuild == 'true' || github.event_name == 'workflow_dispatch'
           with:
             name: versions
             path: versions.json
@@ -41,13 +41,13 @@ jobs:
 
         # - name: Configure AWS credentials
         #   uses: aws-actions/configure-aws-credentials@v1
-        #   if: steps.rebuild-check.outputs.rebuild == 'true' || github.event == 'workflow_dispatch'
+        #   if: steps.rebuild-check.outputs.rebuild == 'true' || github.event_name == 'workflow_dispatch'
         #   with:
         #     aws-access-key-id: ${{ secrets.AWS_DEPLOY_ACCESS_KEY_ID }}
         #     aws-secret-access-key: ${{ secrets.AWS_DEPLOY_SECRET_ACCESS_KEY }}
         #     aws-region: ${{ env.aws_region }}
           
         # - name: Upload versions.json to s3
-        #   if: steps.rebuild-check.outputs.rebuild == 'true' || github.event == 'workflow_dispatch'
+        #   if: steps.rebuild-check.outputs.rebuild == 'true' || github.event_name == 'workflow_dispatch'
         #   run: |
         #     aws s3 sync versions.json s3://${{ env.s3_bucket }}/bin/versions.json --acl public-read --no-progress
