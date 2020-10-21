@@ -37,6 +37,12 @@ jlext(p::Windows) = "exe"
 jlext(p::MacOS) = "dmg"
 jlext(p::Platform) = "tar.gz"
 
+# OS to use in the metadata
+# The OS in the download URL for Linux with musl is "musl"
+# But the OS in the metadata should be "linux"
+meta_os(p::Platform) = up_os(p)
+meta_os(p::Linux) = "linux"
+
 # Get list of tags from the Julia repo
 @info("Probing for tag list...")
 tags_json_path = WebCacheUtilities.download_to_cache(
@@ -141,7 +147,7 @@ for version in tag_versions
         end
         file_dict = Dict(
             "triplet" => triplet(platform),
-            "os" => up_os(platform),
+            "os" => meta_os(platform),
             "arch" => string(arch(platform)),
             "version" => string(version),
             "sha256" => tarball_hash,
