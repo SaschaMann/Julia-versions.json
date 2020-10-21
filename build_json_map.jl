@@ -99,7 +99,6 @@ julia_platforms = [
     FreeBSD(:x86_64),
 ]
 meta = Dict()
-# out_path = joinpath(@__DIR__, "..", "data", "versions.json")
 out_path = ARGS[1]
 for version in tag_versions
     for platform in julia_platforms
@@ -183,6 +182,3 @@ for version in tag_versions
         rm(filepath)
     end
 end
-
-# Just a way to run this automatically at the end because I'm lazy
-# run(`s4cmd put -f --API-ACL=public-read $(out_path) s3://julialang2/bin/versions.json`)
