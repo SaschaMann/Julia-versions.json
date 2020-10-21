@@ -7,7 +7,7 @@ import Pkg.BinaryPlatforms: triplet
 struct PortableWindows <: Platform
     windows::Windows
 end
-PortableWindows(arch::Symbol) = Windows(arch)
+PortableWindows(arch::Symbol) = PortableWindows(Windows(arch))
 @forward PortableWindows.windows (up_os, tar_os, triplet)
 
 up_os(p::Windows) = "winnt"
