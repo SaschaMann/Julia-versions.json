@@ -1,7 +1,12 @@
 # https://github.com/staticfloat/WebCacheUtilities.jl/blob/master/bin/build_json_map.jl
 
-using HTTP, JSON, Pkg.BinaryPlatforms, WebCacheUtilities, SHA
+using HTTP, JSON, Pkg.BinaryPlatforms, WebCacheUtilities, SHA, Lazy
 
+"Wrapper type to define two jlext methods for portable and installer Windows"
+struct PortableWindows <: Platform
+    windows::Windows
+end
+@forward PortableWindows.windows (up_os, tar_os, triplet)
 
 up_os(p::Windows) = "winnt"
 up_os(p::MacOS) = "mac"
@@ -34,6 +39,7 @@ function tar_os(p::Linux)
 end
 
 jlext(p::Windows) = "exe"
+jlext(p::PortableWindows) = "zip"
 jlext(p::MacOS) = "dmg"
 jlext(p::Platform) = "tar.gz"
 
@@ -86,6 +92,8 @@ julia_platforms = [
     MacOS(:x86_64),
     Windows(:x86_64),
     Windows(:i686),
+    PortableWindows(:x86_64),
+    PortableWindows(:i686),
     FreeBSD(:x86_64),
 ]
 meta = Dict()
