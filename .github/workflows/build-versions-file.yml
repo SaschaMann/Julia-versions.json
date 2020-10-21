@@ -4,6 +4,9 @@ on:
   workflow_dispatch:
   schedule:
     - cron: 0 1 * * *
+  push:
+    paths:
+        - "build_json_map.jl"
 
 env:
   aws_region: us-east-1
