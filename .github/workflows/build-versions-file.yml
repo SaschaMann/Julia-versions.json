@@ -38,16 +38,18 @@ jobs:
             name: versions
             path: versions.json
             if-no-files-found: error
+        
+        # The file will only be uploaded to S3 if the build ran on the main branch.
 
         - name: Configure AWS credentials
           uses: aws-actions/configure-aws-credentials@32d908adfb55576ba0c59f3c557058e80b5194c3 # 1.5.3
-          if: steps.rebuild-check.outputs.rebuild == 'true' || github.event_name == 'workflow_dispatch'
+          if: github.ref == 'refs/head/main' && (steps.rebuild-check.outputs.rebuild == 'true' || github.event_name == 'workflow_dispatch')
           with:
             aws-access-key-id: ${{ secrets.AWS_DEPLOY_ACCESS_KEY_ID }}
             aws-secret-access-key: ${{ secrets.AWS_DEPLOY_SECRET_ACCESS_KEY }}
             aws-region: ${{ env.aws_region }}
           
         - name: Upload versions.json to s3
-          if: steps.rebuild-check.outputs.rebuild == 'true' || github.event_name == 'workflow_dispatch'
+          if: github.ref == 'refs/head/main' && (steps.rebuild-check.outputs.rebuild == 'true' || github.event_name == 'workflow_dispatch')
           run: |
             aws s3 cp versions.json s3://${{ env.s3_bucket }}/bin/versions.json --acl public-read --no-progress
