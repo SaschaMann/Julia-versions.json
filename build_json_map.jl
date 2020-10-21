@@ -1,6 +1,7 @@
 # https://github.com/staticfloat/WebCacheUtilities.jl/blob/master/bin/build_json_map.jl
 
 using HTTP, JSON, Pkg.BinaryPlatforms, WebCacheUtilities, SHA
+import Pkg.BinaryPlatforms: triplet
 
 "Wrapper type to define two jlext methods for portable and installer Windows"
 struct PortableWindows <: Platform
