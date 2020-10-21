@@ -6,6 +6,7 @@ using HTTP, JSON, Pkg.BinaryPlatforms, WebCacheUtilities, SHA, Lazy
 struct PortableWindows <: Platform
     windows::Windows
 end
+PortableWindows(arch::Symbol) = Windows(arch)
 @forward PortableWindows.windows (up_os, tar_os, triplet)
 
 up_os(p::Windows) = "winnt"
