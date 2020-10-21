@@ -1,4 +1,4 @@
-# https://github.com/staticfloat/WebCacheUtilities.jl/blob/master/bin/build_json_map.jl
+# Based on https://github.com/staticfloat/WebCacheUtilities.jl/blob/f936c1002ab55ee83817d3540473fbe8f34ff149/bin/build_json_map.jl
 
 using HTTP, JSON, Pkg.BinaryPlatforms, WebCacheUtilities, SHA, Lazy
 import Pkg.BinaryPlatforms: triplet, arch
