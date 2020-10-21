@@ -5,7 +5,7 @@ using HTTP, JSON, Pkg.BinaryPlatforms, WebCacheUtilities, SHA
 
 up_os(p::Windows) = "winnt"
 up_os(p::MacOS) = "mac"
-up_os(p::Linux) = "linux"
+up_os(p::Linux) = libc(p) == :glibc ? "linux" : "musl"
 up_os(p::FreeBSD) = "freebsd"
 up_os(p) = error("Unknown OS for $(p)")
 
@@ -27,9 +27,9 @@ tar_os(p::MacOS) = "mac$(wordsize(p))"
 tar_os(p::FreeBSD) = "freebsd-$(arch(p))"
 function tar_os(p::Linux)
     if arch(p) == :powerpc64le
-        return "linux-ppc64le"
+        return "$(up_os(p))-ppc64le"
     else
-        return "linux-$(arch(p))"
+        return "$(up_os(p))-$(arch(p))"
     end
 end
 
@@ -76,6 +76,7 @@ julia_platforms = [
     Linux(:aarch64),
     Linux(:armv7l),
     Linux(:powerpc64le),
+    Linux(:x86_64, libc = :musl),
     MacOS(:x86_64),
     Windows(:x86_64),
     Windows(:i686),
