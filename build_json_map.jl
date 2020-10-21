@@ -1,6 +1,6 @@
 # https://github.com/staticfloat/WebCacheUtilities.jl/blob/master/bin/build_json_map.jl
 
-using HTTP, JSON, Pkg.BinaryPlatforms, WebCacheUtilities, SHA
+using HTTP, JSON, Pkg.BinaryPlatforms, WebCacheUtilities, SHA, Lazy
 import Pkg.BinaryPlatforms: triplet
 
 "Wrapper type to define two jlext methods for portable and installer Windows"
@@ -8,10 +8,9 @@ struct PortableWindows <: Platform
     windows::Windows
 end
 PortableWindows(arch::Symbol) = Windows(arch)
-triplet(p::PortableWindows) = triplet(p.windows)
+@forward PortableWindows.windows (up_os, tar_os, triplet)
 
 up_os(p::Windows) = "winnt"
-up_os(p::PortableWindows) = up_os(p.windows)
 up_os(p::MacOS) = "mac"
 up_os(p::Linux) = libc(p) == :glibc ? "linux" : "musl"
 up_os(p::FreeBSD) = "freebsd"
@@ -31,7 +30,6 @@ function up_arch(arch::Symbol)
 end
 
 tar_os(p::Windows) = "win$(wordsize(p))"
-tar_os(p::PortableWindows) = tar_os(p.windows)
 tar_os(p::MacOS) = "mac$(wordsize(p))"
 tar_os(p::FreeBSD) = "freebsd-$(arch(p))"
 function tar_os(p::Linux)
