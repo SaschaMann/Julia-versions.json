@@ -32,12 +32,12 @@ jobs:
         # Builds on branches other than main will also ALWAYS run but not upload to S3.
         
         - name: Create version map
-          if: steps.rebuild-check.outputs.rebuild == 'true' || github.ref != 'refs/head/main'
+          if: steps.rebuild-check.outputs.rebuild == 'true' || github.ref != 'refs/heads/main'
           run: julia --color=yes --project build_json_map.jl versions.json
         
         # Upload version.json as workflow artifact for debugging purposes
         - uses: actions/upload-artifact@27bce4eee761b5bc643f46a8dfb41b430c8d05f6 # 2.2.0
-          if: steps.rebuild-check.outputs.rebuild == 'true' || github.ref != 'refs/head/main'
+          if: steps.rebuild-check.outputs.rebuild == 'true' || github.ref != 'refs/heads/main'
           with:
             name: versions
             path: versions.json
