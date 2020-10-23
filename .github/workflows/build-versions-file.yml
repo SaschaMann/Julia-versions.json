@@ -3,7 +3,7 @@ name: Build versions.json
 on:
   workflow_dispatch:
   schedule:
-    - cron: 12 * * * *
+    - cron: 34 12 * * *
   push:
     paths:
     - "build_json_map.jl"
