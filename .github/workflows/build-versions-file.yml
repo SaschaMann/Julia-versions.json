@@ -7,6 +7,8 @@ on:
   push:
     paths:
     - "build_json_map.jl"
+    - "schema.json"
+    - ".github/workflows/build-versions-file.yml"
 
 env:
   aws_region: us-east-1
@@ -43,6 +45,10 @@ jobs:
             path: versions.json
             if-no-files-found: error
         
+        - name: Validate versions.json against schema
+          if: steps.rebuild-check.outputs.rebuild == 'true' || github.ref != 'refs/heads/main'
+          run: npx -p ajv-cli@3.3.0 ajv -s schema.json -d versions.json
+
         # The file will only be uploaded to S3 if the build ran on the main branch.
 
         - name: Configure AWS credentials
