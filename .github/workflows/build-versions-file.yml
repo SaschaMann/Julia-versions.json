@@ -45,7 +45,7 @@ jobs:
             path: versions.json
             if-no-files-found: error
         
-        - name: Verify JSON files against schema
+        - name: Validate versions.json against schema
           if: steps.rebuild-check.outputs.rebuild == 'true' || github.ref != 'refs/heads/main'
           run: npx -p ajv-cli@3.3.0 ajv -s schema.json -d versions.json
 
