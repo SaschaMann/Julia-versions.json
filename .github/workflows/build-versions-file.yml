@@ -31,22 +31,23 @@ jobs:
 
         # If there was no Julia release within the last week and this is a scheduled build, the build ends here.
         # Manually dispatched builds via the workflow_dispatch trigger will ALWAYS run, regardless of the time of the last release.
-        # Builds on branches other than main will also ALWAYS run but not upload to S3.
+        # Builds triggered by push events will also ALWAYS run but only upload to S3 if they are on the main branch,
+        # because they could be caused by a change to the generation script in which case we want it to rebuild the file.
         
         - name: Create version map
-          if: steps.rebuild-check.outputs.rebuild == 'true' || github.ref != 'refs/heads/main'
+          if: steps.rebuild-check.outputs.rebuild == 'true' || github.event_name != 'schedule'
           run: julia --color=yes --project build_json_map.jl versions.json
         
         # Upload version.json as workflow artifact for debugging purposes
         - uses: actions/upload-artifact@27bce4eee761b5bc643f46a8dfb41b430c8d05f6 # 2.2.0
-          if: steps.rebuild-check.outputs.rebuild == 'true' || github.ref != 'refs/heads/main'
+          if: steps.rebuild-check.outputs.rebuild == 'true' || github.event_name != 'schedule'
           with:
             name: versions
             path: versions.json
             if-no-files-found: error
         
         - name: Validate versions.json against schema
-          if: steps.rebuild-check.outputs.rebuild == 'true' || github.ref != 'refs/heads/main'
+          if: steps.rebuild-check.outputs.rebuild == 'true' || github.event_name != 'schedule'
           run: npx -p ajv-cli@3.3.0 ajv -s schema.json -d versions.json
 
         # The file will only be uploaded to S3 if the build ran on the main branch.
