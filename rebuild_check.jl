@@ -1,3 +1,6 @@
+println("::set-output name=rebuild::true")
+
+#=
 using Dates
 using HTTP
 using TimeZones
@@ -22,3 +25,4 @@ last_release  = get_last_modified("https://api.github.com/repos/julialang/julia/
 if abs(now(localzone()) - last_release) < Week(1)
     println("::set-output name=rebuild::true")
 end
+=#
