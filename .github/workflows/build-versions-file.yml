@@ -62,3 +62,4 @@ jobs:
           if: github.ref == 'refs/heads/main' && (steps.rebuild-check.outputs.rebuild == 'true' || github.event_name != 'schedule')
           run: |
             aws s3 cp versions.json s3://${{ env.s3_bucket }}/bin/versions.json --acl public-read --no-progress
+            curl -X PURGE https://julialang-s3.julialang.org/bin/versions.json
