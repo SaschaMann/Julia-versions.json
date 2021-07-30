@@ -30,8 +30,14 @@ function up_arch(arch::Symbol)
 end
 
 tar_os(p::Windows) = "win$(wordsize(p))"
-tar_os(p::MacOS) = "mac$(wordsize(p))"
 tar_os(p::FreeBSD) = "freebsd-$(arch(p))"
+function tar_os(p::MacOS)
+    if arch(p) == :aarch64
+        return "macaarch$(wordsize(p))"
+    else
+        return "mac$(wordsize(p))"
+    end
+end
 function tar_os(p::Linux)
     if arch(p) == :powerpc64le
         return "$(up_os(p))-ppc64le"
@@ -92,6 +98,7 @@ julia_platforms = [
     Linux(:powerpc64le),
     Linux(:x86_64, libc = :musl),
     MacOS(:x86_64),
+    MacOS(:aarch64),
     Windows(:x86_64),
     Windows(:i686),
     PortableWindows(:x86_64),
