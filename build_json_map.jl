@@ -30,8 +30,14 @@ function up_arch(arch::Symbol)
 end
 
 tar_os(p::Windows) = "win$(wordsize(p))"
-tar_os(p::MacOS) = "mac$(wordsize(p))"
 tar_os(p::FreeBSD) = "freebsd-$(arch(p))"
+function tar_os(p::MacOS)
+    if arch(p) == :aarch64
+        return "macaarch$(wordsize(p))"
+    else
+        return "mac$(wordsize(p))"
+    end
+end
 function tar_os(p::Linux)
     if arch(p) == :powerpc64le
         return "$(up_os(p))-ppc64le"
