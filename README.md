@@ -1,5 +1,9 @@
 # versions.json
 
+**This project has been moved to https://github.com/JuliaLang/VersionsJSONUtil.jl/.**
+
+---
+
 Build and deploy Julia's [versions.json](https://julialang-s3.julialang.org/bin/versions.json) file.
 
 More info & discussion: https://github.com/JuliaLang/julia/issues/33817
